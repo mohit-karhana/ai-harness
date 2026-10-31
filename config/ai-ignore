@@ -1,0 +1,13 @@
+# Keep secrets and credentials out of AI context.
+.env
+.env.local
+.env.*.local
+.env.prod*
+.env.staging
+*.pem
+*.key
+id_rsa*
+secrets/
+**/credentials*.json
+*.sqlite3
+*.dump

@@ -1,0 +1,9 @@
+# Third-party skill vendored by ai-harness. Do not edit files in this
+# directory by hand; re-pin with scripts/vendor-skill.sh instead.
+repository: https://github.com/cloudflare/security-audit-skill.git
+commit: c1c8a8c1471069fb0e188eeaff69b8e8db6564a8
+commit_date: 2026-09-14
+path: skills/security-audit
+license: MIT License
+excluded: validate-coverage-ledger.test.cjs, validate-findings.test.cjs
+vendored_on: 2026-10-31

@@ -1,0 +1,7 @@
+# Company standards change only with platform-team review.
+# Replace the team handle with your organization's platform team.
+*                 @company/ai-platform
+/instructions/security.md  @company/ai-platform @company/security
+/instructions/tech-stack.md  @company/ai-platform @company/architecture
+/config/          @company/ai-platform @company/security
+/optional-skills/ @company/ai-platform @company/security

@@ -1,0 +1,4 @@
+.DS_Store
+*.harness-new
+*.harness-new-block
+*.harness-backup-*
