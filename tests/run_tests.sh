@@ -20,7 +20,10 @@ assert_not_contains(){ ! grep -qF -- "$2" "$1" 2>/dev/null || fail "${1#"$T"/} s
 assert_eq()          { [ "$1" = "$2" ] || fail "${3:-values differ}: expected '$2', got '$1'"; }
 assert_count()       { local n; n="$(grep -cF -- "$2" "$1" 2>/dev/null || true)"; assert_eq "$n" "$3" "occurrences of '$2' in ${1#"$T"/}"; }
 
-if command -v sha256sum >/dev/null 2>&1; then H() { sha256sum "$@"; }; else H() { shasum -a 256 "$@"; }; fi
+# Hash stdin.
+if command -v sha256sum >/dev/null 2>&1; then H() { sha256sum; }; else H() { shasum -a 256; }; fi
+# Succeed if any path matching the (already expanded) glob exists.
+glob_exists() { local f; for f in "$@"; do [ -e "$f" ] && return 0; done; return 1; }
 snapshot() { (cd "$1" && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 cat | H | awk '{print $1}'; find . | LC_ALL=C sort | H | awk '{print $1}'); }
 
 new_project() { # new_project django|react|empty NAME -> path
@@ -207,7 +210,7 @@ test_setup_force_replaces_user_files_with_backup() {
   mkdir -p "$p/.cursor/commands"; printf 'mine\n' > "$p/.cursor/commands/bug-fix.md"
   run setup.sh --force "$p"
   assert_contains "$p/.cursor/commands/bug-fix.md" ".ai-harness/workflows/bug-fix.md"
-  ls "$p/.cursor/commands/" | grep -q 'bug-fix.md.harness-backup-' || fail "backup not created"
+  glob_exists "$p/.cursor/commands/bug-fix.md.harness-backup-"* || fail "backup not created"
 }
 
 test_setup_accepts_relative_path() {
@@ -358,7 +361,7 @@ test_update_reports_conflicts_and_keeps_local_edits() {
   # --force accepts upstream and keeps a backup.
   run_with "$h" update.sh --no-fetch --force "$p"
   assert_contains "$p/.ai-harness/instructions/python.md" "UPSTREAM CHANGE"
-  ls "$p/.ai-harness/instructions/" | grep -q 'python.md.harness-backup-' || fail "no backup after --force"
+  glob_exists "$p/.ai-harness/instructions/python.md.harness-backup-"* || fail "no backup after --force"
 }
 
 test_update_preserves_project_content() {

@@ -249,7 +249,7 @@ _reconcile_orphans() {
 # _remove_block RELPATH RECORDED_HASH CREATED STATUS
 _remove_block() {
   local rel="$1" hash="$2" created="$3" status="$4" dst="$PROJECT/$1" style tmp cur
-  style=html; case "$rel" in .cursorignore|*.gitignore) style=hash ;; esac
+  style="html"; case "$rel" in .cursorignore|*.gitignore) style="hash" ;; esac
   _block_prefixes "$style"
   [ "$(_block_state "$dst")" = ok ] || { _report kept "$rel" "no intact harness block found"; return 0; }
   tmp="$WORK/block.rm"; _block_extract "$dst" > "$tmp"; cur="$(hash_file "$tmp")"
